@@ -1,0 +1,7 @@
+.side-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #36aa95;
+    width: 30%;
+    height: 100vh
+}
