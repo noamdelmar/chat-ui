@@ -10,9 +10,11 @@ const Chat = () => {
   const location = useLocation();
   const { username, port } = location.state;
 
+  const PORT = 8080
+
 useEffect(() => {
   // Initialize WebSocket connection
-  const ws = new WebSocket('ws://localhost:8080');
+  const ws = new WebSocket(`ws://localhost:${PORT}`);
 
   ws.onopen = () => {
     console.log('Connected to chat server');
