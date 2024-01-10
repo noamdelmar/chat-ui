@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import './styles.css';
 import httpCommon from '../../services/httpCommon';
+import { useAppContext } from '../../context/popup/popup_context_provider';
+import CreateRoomPopup from '../popup/CreateRoomPopup';
 
-const SideChats = () => {
+const SideChats = ({setRoom}) => {
+    const { showPopup, hidePopup } = useAppContext();
     const getConnectedUsers = async () => {
         try {
             console.log('get all users');
@@ -18,7 +21,10 @@ const SideChats = () => {
     }, []);
     
     return(
-        <div className='side-container'></div>
+        <div className='side-container'>
+            <div onClick={() => showPopup(<CreateRoomPopup setRoom={setRoom} />)}>create a group</div>
+            <div>join a group</div>
+        </div>
     )
 }
 

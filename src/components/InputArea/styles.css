@@ -1,0 +1,22 @@
+.input-container {
+  display: flex;
+  padding: 10px;
+  background-color: white;
+}
+
+.input {
+  flex: 1;
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 20px;
+  border: none;
+  outline: 1px solid black;
+  max-width: 70%;
+  height: 25px;
+  font-size: 16px;
+}
+
+button {
+  padding: 5px;
+  cursor: pointer;
+}

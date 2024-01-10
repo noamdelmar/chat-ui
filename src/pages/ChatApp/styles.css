@@ -15,28 +15,3 @@
   height: 100%;
 }
 
-.chat-message {
-  margin-bottom: 10px;
-  width: 150px;
-  min-height: 50px;
-  border-radius: 15px;
-  border: 1px solid black;
-  line-height: 3;
-}
-
-.input-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-}
-
-input {
-  flex: 1;
-  margin-right: 10px;
-  padding: 5px;
-}
-
-button {
-  padding: 5px;
-  cursor: pointer;
-}

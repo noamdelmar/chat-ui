@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 import { useLocation } from 'react-router-dom';
 import SideChats from '../../components/SideChats/SideChats';
-
+import InputArea from '../../components/InputArea/InputArea';
+import MessageItem from '../../components/MessageItem/MessageItem';
+import ChatHeader from '../../components/ChatHeader/ChatHeader';
+ 
 const Chat = () => {
-  const [message, setMessage] = useState('');
+  const location = useLocation();
   const [chatLog, setChatLog] = useState([]);
   const [socket, setSocket] = useState(null);
   const [connectedUsers, setConnectedUsers] = useState([]);
-  const location = useLocation();
-  const { username, port, room, password } = location.state;
+  const [room, setRoom] = useState(location.state.room)
+  const { username, port, password } = location.state;
 
   const PORT = 8080;
 
@@ -46,7 +49,13 @@ const Chat = () => {
         const data = JSON.parse(jsonDataString);
 
         if (data.type === 'message') {
-          setChatLog((prevChatLog) => [...prevChatLog, { username: data.username, message: data.message }]);
+          const timestamp = new Date().toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+          });
+           const status = Math.random() < 0.5 ? 'delivered' : 'read';
+          setChatLog((prevChatLog) => [...prevChatLog,  { username: data.username, message: data.message, timestamp, status },]);
         }
         if (data.type === 'userlist') {
           setConnectedUsers(data.users);
@@ -65,50 +74,18 @@ const Chat = () => {
     };
   }, [username, room, password]);
 
-  const handleMessageChange = (event) => {
-    setMessage(event.target.value);
-  };
-
-  const sendMessage = () => {
-    // Send the message to the server
-    if (socket && message.trim() !== '') {
-      const data = {
-        type: 'message',
-        username,
-        message,
-      };
-      socket.send(JSON.stringify(data));
-      setChatLog((prevChatLog) => [...prevChatLog, { username, message }]);
-      setMessage('');
-    }
-  };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <SideChats connectedUsers={connectedUsers} />
+    <div style={{ display: 'flex', backgroundColor: '#ededed' }}>
+      <SideChats connectedUsers={connectedUsers} setRoom={setRoom}/>
       <div className="chat-container">
+      <ChatHeader room={room} />
         <div className="chat-log">
-        <p>room: {room}</p>
           {chatLog.map((chat, index) => (
-            <div
-              key={index}
-              className="chat-message"
-              style={{ alignSelf: username === chat.username ? 'self-end' : undefined }}
-            >
-              {chat.username}: {chat.message}
-            </div>
+            <MessageItem username={username} chat={chat}/>
           ))}
         </div>
-        <div className="input-container">
-          <input type="text" placeholder="Enter your username" value={username} />
-          <input
-            type="text"
-            placeholder="Type your message..."
-            value={message}
-            onChange={handleMessageChange}
-          />
-          <button onClick={sendMessage}>Send</button>
-        </div>
+            <InputArea socket={socket} username={username} setChatLog={setChatLog}/>
       </div>
     </div>
   );

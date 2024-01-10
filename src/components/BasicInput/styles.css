@@ -1,12 +1,12 @@
 .input-container{
     display: flex;
-    width: 80%;
     justify-content: center;
+    align-items: center;
 }
 
 .basic-input{
     background-color: #eaeeed;
     border: none;
     color: #617570;
-    height: 50px;
+    height: 60px;
 }
