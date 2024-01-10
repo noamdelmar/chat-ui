@@ -15,7 +15,7 @@ const Chat = () => {
 
   useEffect(() => {
     // Initialize WebSocket connection
-    const ws = new WebSocket(`ws://localhost:${PORT}?room=${room}&password=${password}`);
+    const ws = new WebSocket(`ws://localhost:${PORT}`);
 
     ws.onopen = () => {
       console.log('Connected to chat server');
@@ -23,8 +23,9 @@ const Chat = () => {
       // Send the username to the server
       if (username.trim() !== '') {
         const data = {
-          type: 'username',
+          type: 'user_data',
           username,
+          room
         };
         ws.send(JSON.stringify(data));
       }
@@ -87,6 +88,7 @@ const Chat = () => {
       <SideChats connectedUsers={connectedUsers} />
       <div className="chat-container">
         <div className="chat-log">
+        <p>room: {room}</p>
           {chatLog.map((chat, index) => (
             <div
               key={index}
