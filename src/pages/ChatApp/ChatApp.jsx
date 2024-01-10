@@ -79,7 +79,7 @@ const Chat = () => {
     <div style={{ display: 'flex', backgroundColor: '#ededed' }}>
       <SideChats connectedUsers={connectedUsers} setRoom={setRoom}/>
       <div className="chat-container">
-      <ChatHeader room={room} />
+      <ChatHeader room={room} handleExitRoom={setRoom}/>
         <div className="chat-log">
           {chatLog.map((chat, index) => (
             <MessageItem username={username} chat={chat}/>
