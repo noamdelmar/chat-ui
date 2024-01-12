@@ -21,7 +21,7 @@ const SpeechText = ({setMessage}) => {
   }
 
   return (
-    <IconButton color='primary'>
+    <IconButton>
       {listening ? 
         <MicIcon style={{fontSize: '2rem', cursor:'pointer'}} onClick={SpeechRecognition.stopListening}/> :
         <MicNoneIcon style={{fontSize: '2rem', cursor:'pointer'}} onClick={SpeechRecognition.startListening} />

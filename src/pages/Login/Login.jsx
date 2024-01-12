@@ -2,20 +2,27 @@ import React, { useState } from 'react';
 import './styles.css';
 import BasicInput from '../../components/BasicInput/BasicInput';
 import { useNavigate } from 'react-router-dom';
+import {useUserRooms} from '../../context/rooms/user_rooms_context';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [port, setPort] = useState(5050);
   const [room, setRoom] = useState('');
   const [password, setPassword] = useState('');
+  const {userRooms, setUserRooms} = useUserRooms();
   const navigate = useNavigate();
 
   const handleConnect = () => {
     // Navigate to the chat page with the provided information
-    navigate('/chat', {
+    if(!userRooms.includes(room)){
+      setUserRooms((prevArray) => [...prevArray, room]) 
+    }
+    sessionStorage.setItem('currentRoom', room);
+      navigate('/chat', {
       state: { username, port, room, password },
     });
   };
+
 
   return (
     <div className='container'>

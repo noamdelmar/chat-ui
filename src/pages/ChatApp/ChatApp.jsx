@@ -11,12 +11,14 @@ const Chat = () => {
   const [chatLog, setChatLog] = useState([]);
   const [socket, setSocket] = useState(null);
   const [connectedUsers, setConnectedUsers] = useState([]);
-  const [room, setRoom] = useState(location.state.room)
+  const [room, setRoom] = useState(sessionStorage.getItem("currentRoom"))
   const { username, port, password } = location.state;
-
+    
   const PORT = 8080;
 
   useEffect(() => {
+    sessionStorage.setItem('currentRoom', room);
+    setChatLog([]);
     // Initialize WebSocket connection
     const ws = new WebSocket(`ws://localhost:${PORT}`);
 
@@ -37,16 +39,17 @@ const Chat = () => {
       setSocket(ws);
     };
 
-    ws.onmessage = (event) => {
-      // Handle incoming messages
-      const dataString = event.data;
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
 
-      // Extract the JSON content (remove the username prefix)
-      const jsonDataString = dataString.substring(dataString.indexOf(':') + 1).trim();
+    ws.onmessage = (event) => {
+      const dataString = event.data;
+      
 
       try {
         // Parse the JSON data
-        const data = JSON.parse(jsonDataString);
+        const data = JSON.parse(dataString);
 
         if (data.type === 'message') {
           const timestamp = new Date().toLocaleTimeString('en-US', {
@@ -56,7 +59,7 @@ const Chat = () => {
           });
            const status = Math.random() < 0.5 ? 'delivered' : 'read';
           setChatLog((prevChatLog) => [...prevChatLog,  { username: data.username, message: data.message, timestamp, status },]);
-        }
+        } 
         if (data.type === 'userlist') {
           setConnectedUsers(data.users);
         }
@@ -72,6 +75,7 @@ const Chat = () => {
         ws.close();
       }
     };
+
   }, [username, room, password]);
 
 
@@ -79,7 +83,7 @@ const Chat = () => {
     <div style={{ display: 'flex', backgroundColor: '#ededed' }}>
       <SideChats connectedUsers={connectedUsers} setRoom={setRoom}/>
       <div className="chat-container">
-      <ChatHeader room={room} handleExitRoom={setRoom}/>
+      <ChatHeader room={room} setRoom={setRoom} handleExitRoom={setRoom} connectedUsers={connectedUsers} />
         <div className="chat-log">
           {chatLog.map((chat, index) => (
             <MessageItem username={username} chat={chat}/>

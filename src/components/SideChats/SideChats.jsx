@@ -1,29 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 import httpCommon from '../../services/httpCommon';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import CreateRoomPopup from '../popup/CreateRoomPopup';
+import { useUserRooms } from '../../context/rooms/user_rooms_context';
+import GroupItem from '../GroupItem/GroupItem';
+import SearchAppBar from '../Search/Search';
 
 const SideChats = ({setRoom}) => {
-    const { showPopup, hidePopup } = useAppContext();
-    const getConnectedUsers = async () => {
-        try {
-            console.log('get all users');
-            const res = await httpCommon.get('/get_usernames');
-            console.log(res.data);  // Assuming your data is in the 'data' property of the response
-        } catch (error) {
-            console.error('Error fetching connected users:', error);
-        }
-    };
-
-    useEffect(() => {
-        // getConnectedUsers();
-    }, []);
+    const { showPopup } = useAppContext();
+    const { userRooms } = useUserRooms();
+    const [filterdRooms, setFilteredRooms] = useState(userRooms);
     
+    useEffect(() => {
+        if(filterdRooms.length === 0) setFilteredRooms(userRooms)
+    },[filterdRooms])
     return(
         <div className='side-container'>
             <div onClick={() => showPopup(<CreateRoomPopup setRoom={setRoom} />)}>create a group</div>
-            <div>join a group</div>
+            {/* <div>join a group</div> */}
+            <SearchAppBar data={userRooms} setFilteredData={setFilteredRooms} />
+            {filterdRooms?.map(room => {
+                return <GroupItem group={room} setRoom={setRoom} />
+            })}
         </div>
     )
 }
