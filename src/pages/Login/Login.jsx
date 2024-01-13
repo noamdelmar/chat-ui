@@ -14,12 +14,12 @@ const Login = () => {
 
   const handleConnect = () => {
     // Navigate to the chat page with the provided information
-    if(!userRooms.includes(room)){
-      setUserRooms((prevArray) => [...prevArray, room]) 
+    if(!userRooms.includes('General Group')){
+      setUserRooms((prevArray) => ['General Group', ...prevArray ]) 
     }
-    sessionStorage.setItem('currentRoom', room);
+    sessionStorage.setItem('currentRoom', 'General Group');
       navigate('/chat', {
-      state: { username, port, room, password },
+      state: { username, port },
     });
   };
 
@@ -33,9 +33,9 @@ const Login = () => {
         <h1 className='login-title'>Login</h1>
         <BasicInput name='Username' setValue={setUsername} />
         <BasicInput name='Port' value={port} setValue={setPort} />
-        <BasicInput name='Room' setValue={setRoom} />
-        <BasicInput name='Password' type='password' setValue={setPassword} />
-        <button className='login-button' disabled={!username || !room} onClick={handleConnect}>
+        {/* <BasicInput name='Room' setValue={setRoom} />
+        <BasicInput name='Password' type='password' setValue={setPassword} /> */}
+        <button className='login-button' disabled={!username} onClick={handleConnect}>
           Connect
         </button>
       </div>

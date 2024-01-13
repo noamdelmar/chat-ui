@@ -46,12 +46,27 @@ const Chat = () => {
 
     ws.onmessage = (event) => {
       const dataString = event.data;
-      
+      console.log(dataString)
+      if(dataString.includes('Connected users')){
+
+        const endIndex = dataString.indexOf("Connected users");
+        
+        // If "Connected users" is found
+        if (endIndex !== -1) {
+          // Extract the substring before the index of "Connected users"
+          const usersPart = dataString.slice(0, endIndex).trim();
+          
+          // Remove the square brackets and split by commas to get an array
+          const usersArray = usersPart.replace(/[\[\]']/g, '').split(',').map(item => item.trim());
+          
+          setConnectedUsers(usersArray);
+        } 
+      }
 
       try {
         // Parse the JSON data
         const data = JSON.parse(dataString);
-
+        
         const timestamp = new Date().toLocaleTimeString('en-US', {
           hour: 'numeric',
           minute: 'numeric',
