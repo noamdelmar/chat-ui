@@ -4,10 +4,12 @@ import SpeechText from '../SpeechText/SpeechText';
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 
 const InputArea = ({ socket, username, setChatLog }) => {
   const [message, setMessage] = useState('');
   const [file, setFile] = useState(null);
+  const [imageSrc, setImageSrc] = useState('');
   const fileInputRef = useRef(null);
 
   const handleMessageChange = (event) => {
@@ -15,7 +17,12 @@ const InputArea = ({ socket, username, setChatLog }) => {
   };
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      const imageUrl = URL.createObjectURL(selectedFile);
+      setImageSrc(imageUrl);
+    }
   };
 
   const sendMessage = () => {
@@ -36,6 +43,7 @@ const InputArea = ({ socket, username, setChatLog }) => {
               username,
               name: file.name,
               mimeType: file.type,
+              message: message,
               content: event.target.result,
             },
           };
@@ -48,6 +56,7 @@ const InputArea = ({ socket, username, setChatLog }) => {
               name: file.name,
               mimeType: file.type,
               content: event.target.result,
+              message: message,
               timestamp,
             },
           ]);
@@ -88,7 +97,17 @@ const InputArea = ({ socket, username, setChatLog }) => {
   };
 
   return (
-    <div className="input-container">
+    <>
+    {file && 
+      <div className='upload-image-container'>
+      <IconButton style={{alignSelf: 'start'}} onClick={() => setFile(null)}>
+        <CloseIcon />
+      </IconButton>
+        <img style={{maxHeight: '70%', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px', marginTop: '7%', marginRight: '5%'}} src={imageSrc} />
+      </div>
+      }
+      <div className='input-container'>
+      {!file &&
       <IconButton style={{ cursor: 'pointer' }}>
         <label htmlFor="fileInput" className="fileInputLabel">
           <div className="plusButton">
@@ -102,6 +121,7 @@ const InputArea = ({ socket, username, setChatLog }) => {
           />
         </label>
       </IconButton>
+      }
       <input
         className="input"
         type="text"
@@ -116,6 +136,7 @@ const InputArea = ({ socket, username, setChatLog }) => {
       </IconButton>
       <SpeechText setMessage={setMessage} />
     </div>
+    </>
   );
 };
 
