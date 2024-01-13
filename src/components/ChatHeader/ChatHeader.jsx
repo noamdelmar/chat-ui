@@ -26,6 +26,8 @@ const ChatHeader = ({room, setRoom, handleExitRoom, connectedUsers}) => {
             <h1 className='room-title'>{room}</h1>
             <p style={{margin: '0', fontSize: '13px', color: 'gray'}}>{connectedUsers.length} Online Members</p>
         </div>
+        {room !== 'General Group' &&
+        <>
             <IconButton
                 size="large"
                 aria-controls="menu"
@@ -41,9 +43,11 @@ const ChatHeader = ({room, setRoom, handleExitRoom, connectedUsers}) => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={() => handleExitRoom(null)}>Exit Group</MenuItem>
-                <MenuItem onClick={handleClose}>Pin Group</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Pin Group</MenuItem> */}
                 <MenuItem onClick={() => showPopup(<RenameRoomPopup room={room} setRoom={setRoom} />) }>Edit Group Name</MenuItem>
             </Menu>
+        </>
+        }
         </div>
     )
 }

@@ -20,8 +20,8 @@ const SideChats = ({setRoom}) => {
             <div onClick={() => showPopup(<CreateRoomPopup setRoom={setRoom} />)}>create a group</div>
             {/* <div>join a group</div> */}
             <SearchAppBar data={userRooms} setFilteredData={setFilteredRooms} />
-            {filterdRooms?.map(room => {
-                return <GroupItem group={room} setRoom={setRoom} />
+            {filterdRooms?.map((room, id) => {
+                return <GroupItem group={room} setRoom={setRoom} id={id} />
             })}
         </div>
     )

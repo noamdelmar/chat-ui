@@ -4,7 +4,7 @@ import { useUserRooms } from '../../context/rooms/user_rooms_context';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 
-const GroupItem = ({group, setRoom}) => {
+const GroupItem = ({group, setRoom, id}) => {
     const currentRoom = sessionStorage.getItem('currentRoom');
     const { userRooms, deleteRoom } = useUserRooms();
     
@@ -15,9 +15,11 @@ const GroupItem = ({group, setRoom}) => {
     return(
         <div style={{backgroundColor: currentRoom === group ? '#3a9e8c' : undefined}} className='group-item-container' onClick={() => setRoom(group)}>
             <h1 className='group-item-title'>{group}</h1>
+            { id !== 0 && 
             <IconButton onClick={handleDelete}>
                 <DeleteIcon />
             </IconButton>
+            }
         </div>
     )
 }
