@@ -14,7 +14,7 @@ const Chat = () => {
   const [room, setRoom] = useState(sessionStorage.getItem("currentRoom"))
   const { username, port, password } = location.state;
     
-  const PORT = 8080;
+  const PORT = 5050;
 
   useEffect(() => {
     sessionStorage.setItem('currentRoom', room);
@@ -32,6 +32,7 @@ const Chat = () => {
           username,
           room
         };
+        console.log(data)
         ws.send(JSON.stringify(data));
       }
 
@@ -62,7 +63,7 @@ const Chat = () => {
         } else if (data.type === 'userlist') {
           setConnectedUsers(data.users);
         } else if(data.type === 'file') { 
-          setChatLog((prevChatLog) => [...prevChatLog, {username: data.file.username, name: data.file.name, content: data.file.content, timestamp}]);
+          setChatLog((prevChatLog) => [...prevChatLog, {username: data.file.username, name: data.file.name, content: data.file.content,message: data.file.message, timestamp}]);
         }
         // Add handling for other message types if needed
       } catch (error) {
@@ -79,6 +80,11 @@ const Chat = () => {
 
   }, [username, room, password]);
 
+  useEffect(() => {
+    console.log(room)
+    if(!room) setRoom('General Group');
+    sessionStorage.setItem('currentRoom', room)
+  },[room])
 
   return (
     <div style={{ display: 'flex', backgroundColor: '#ededed' }}>
