@@ -51,17 +51,18 @@ const Chat = () => {
         // Parse the JSON data
         const data = JSON.parse(dataString);
 
+        const timestamp = new Date().toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          hour12: true,
+        });
         if (data.type === 'message') {
-          const timestamp = new Date().toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
-          });
            const status = Math.random() < 0.5 ? 'delivered' : 'read';
           setChatLog((prevChatLog) => [...prevChatLog,  { username: data.username, message: data.message, timestamp, status },]);
-        } 
-        if (data.type === 'userlist') {
+        } else if (data.type === 'userlist') {
           setConnectedUsers(data.users);
+        } else if(data.type === 'file') { 
+          setChatLog((prevChatLog) => [...prevChatLog, {username: data.file.username, name: data.file.name, content: data.file.content, timestamp}]);
         }
         // Add handling for other message types if needed
       } catch (error) {
