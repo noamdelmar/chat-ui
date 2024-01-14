@@ -10,6 +10,7 @@ const InputArea = ({ socket, username, setChatLog }) => {
   const [message, setMessage] = useState('');
   const [file, setFile] = useState(null);
   const [imageSrc, setImageSrc] = useState('');
+  const [recording, setRecording] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleMessageChange = (event) => {
@@ -107,6 +108,8 @@ const InputArea = ({ socket, username, setChatLog }) => {
       </div>
       }
       <div className='input-container'>
+      {!recording &&
+      <>
       {!file &&
       <IconButton style={{ cursor: 'pointer' }}>
         <label htmlFor="fileInput" className="fileInputLabel">
@@ -134,7 +137,12 @@ const InputArea = ({ socket, username, setChatLog }) => {
       <IconButton onClick={sendMessage}>
         <SendIcon />
       </IconButton>
-      <SpeechText setMessage={setMessage} />
+      </>
+      }
+      {
+        !file &&
+        <SpeechText socket={socket} username={username} setChatLog={setChatLog} setRecording={setRecording}/>
+      }
     </div>
     </>
   );

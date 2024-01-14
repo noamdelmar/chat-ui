@@ -5,7 +5,8 @@ import SideChats from '../../components/SideChats/SideChats';
 import InputArea from '../../components/InputArea/InputArea';
 import MessageItem from '../../components/MessageItem/MessageItem';
 import ChatHeader from '../../components/ChatHeader/ChatHeader';
- 
+import AudioItem from '../../components/AudioItem/AudioItem';
+
 const Chat = () => {
   const location = useLocation();
   const [chatLog, setChatLog] = useState([]);
@@ -72,13 +73,16 @@ const Chat = () => {
           minute: 'numeric',
           hour12: true,
         });
+        console.log(data)
         if (data.type === 'message') {
            const status = Math.random() < 0.5 ? 'delivered' : 'read';
-          setChatLog((prevChatLog) => [...prevChatLog,  { username: data.username, message: data.message, timestamp, status },]);
+          setChatLog((prevChatLog) => [...prevChatLog,  {username: data.username, message: data.message, timestamp, status },]);
         } else if (data.type === 'userlist') {
           setConnectedUsers(data.users);
         } else if(data.type === 'file') { 
           setChatLog((prevChatLog) => [...prevChatLog, {username: data.file.username, name: data.file.name, content: data.file.content,message: data.file.message, timestamp}]);
+        } else if(data.type === 'audio') {
+          setChatLog((prevChatLog) => [...prevChatLog, {type: 'audio', username: data.audio.username, content: data.audio.content, timestamp}]);
         }
         // Add handling for other message types if needed
       } catch (error) {
@@ -106,12 +110,15 @@ const Chat = () => {
       <SideChats connectedUsers={connectedUsers} setRoom={setRoom}/>
       <div className="chat-container">
       <ChatHeader room={room} setRoom={setRoom} handleExitRoom={setRoom} connectedUsers={connectedUsers} />
-        <div className="chat-log">
-          {chatLog.map((chat, index) => (
-            <MessageItem username={username} chat={chat}/>
-          ))}
-        </div>
-            <InputArea socket={socket} username={username} setChatLog={setChatLog}/>
+      <div className="chat-log">
+        {chatLog.map((chat, index) => (
+          chat.type === 'audio' ? 
+            <AudioItem audio={chat} username={username} key={index} />
+          :
+            <MessageItem username={username} chat={chat} key={index} />
+        ))}
+      </div>
+      <InputArea socket={socket} username={username} setChatLog={setChatLog}/>
       </div>
     </div>
   );

@@ -1,0 +1,8 @@
+.audio-player {
+  margin: 15px 0
+}
+.play-button {
+  width: 100%;
+  height: 100%;
+  display: none;
+}
