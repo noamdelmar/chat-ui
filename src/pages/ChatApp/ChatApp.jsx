@@ -6,6 +6,7 @@ import InputArea from '../../components/InputArea/InputArea';
 import MessageItem from '../../components/MessageItem/MessageItem';
 import ChatHeader from '../../components/ChatHeader/ChatHeader';
 import AudioItem from '../../components/AudioItem/AudioItem';
+import { useUserRooms } from '../../context/rooms/user_rooms_context';
 
 const Chat = () => {
   const location = useLocation();
@@ -13,15 +14,15 @@ const Chat = () => {
   const [socket, setSocket] = useState(null);
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [room, setRoom] = useState(sessionStorage.getItem("currentRoom"))
-  const { username, port, password } = location.state;
+  const { userRooms } = useUserRooms();
+  const { username, port } = location.state;
     
-  const PORT = 5050;
 
   useEffect(() => {
     sessionStorage.setItem('currentRoom', room);
     setChatLog([]);
     // Initialize WebSocket connection
-    const ws = new WebSocket(`ws://localhost:${PORT}`);
+    const ws = new WebSocket(`ws://localhost:${port}`);
 
     ws.onopen = () => {
       console.log('Connected to chat server');
@@ -33,7 +34,6 @@ const Chat = () => {
           username,
           room
         };
-        console.log(data)
         ws.send(JSON.stringify(data));
       }
 
@@ -47,7 +47,6 @@ const Chat = () => {
 
     ws.onmessage = (event) => {
       const dataString = event.data;
-      console.log(dataString)
       if(dataString.includes('Connected users')){
 
         const endIndex = dataString.indexOf("Connected users");
@@ -73,7 +72,6 @@ const Chat = () => {
           minute: 'numeric',
           hour12: true,
         });
-        console.log(data)
         if (data.type === 'message') {
            const status = Math.random() < 0.5 ? 'delivered' : 'read';
           setChatLog((prevChatLog) => [...prevChatLog,  {username: data.username, message: data.message, timestamp, status },]);
@@ -97,16 +95,16 @@ const Chat = () => {
       }
     };
 
-  }, [username, room, password]);
+  }, [username, room]);
 
   useEffect(() => {
-    console.log(room)
-    if(!room) setRoom('General Group');
+    
+    if(!room || !userRooms.includes(room)) setRoom('General Group');
     sessionStorage.setItem('currentRoom', room)
-  },[room])
+  },[room, userRooms])
 
   return (
-    <div style={{ display: 'flex', backgroundColor: '#ededed' }}>
+    <div style={{ display: 'flex', backgroundColor: '#efefef' }}>
       <SideChats connectedUsers={connectedUsers} setRoom={setRoom}/>
       <div className="chat-container">
       <ChatHeader room={room} setRoom={setRoom} handleExitRoom={setRoom} connectedUsers={connectedUsers} />

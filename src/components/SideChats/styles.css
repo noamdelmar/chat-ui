@@ -1,7 +1,16 @@
 .side-container {
     display: flex;
     flex-direction: column;
-    background-color: #36aa95;
+    background-color: white;
     width: 25%;
     height: 100vh
 }
+
+.create-group-button {
+    width: 70%;
+    height: 50px;
+    max-width: 150px;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+

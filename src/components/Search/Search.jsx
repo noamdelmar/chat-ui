@@ -28,6 +28,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  color: 'black'
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -36,6 +37,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   fontSize: '13px',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
+    backgroundColor: '#efefefed',
+    borderRadius: '10px',
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
