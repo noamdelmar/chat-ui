@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './styles.css';
-import SpeechText from '../SpeechText/SpeechText';
+import SpeechText from '../AudioRecord/AudioRecord';
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
@@ -85,7 +85,6 @@ const InputArea = ({ socket, username, setChatLog }) => {
   };
 
   const resetFileInput = () => {
-    // Reset the file input value using the ref
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -107,7 +106,7 @@ const InputArea = ({ socket, username, setChatLog }) => {
         <img style={{maxHeight: '70%', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px', marginTop: '7%', marginRight: '5%'}} src={imageSrc} />
       </div>
       }
-      <div className='input-container'>
+      <div className='input-aria-container'>
       {!recording &&
       <>
       {!file &&

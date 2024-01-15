@@ -3,10 +3,11 @@ import styled from 'styled-components'
 export const BlackBack = styled.div(() => ({
     width: '100vw',
     height: '100vh',
-    backgroundColor: 'rgba(0,0,0,.3)',
+    backgroundColor: 'rgba(0,0,0,.2)',
     position: 'absolute',
     top: '0',
-    left: '0'
+    left: '0',
+    zIndex: '10'
 }));
 
 export const FlexContainer = styled.div(() => ({
@@ -20,12 +21,14 @@ export const PopupContainerStyle = styled.div(() => ({
     height: 'auto',
     minHeight: '15rem',
     backgroundColor: 'white',
-    border: '1px solid black',
     borderRadius: '1rem',
     position: 'absolute',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: '4rem'
+    marginTop: '4rem',
+    padding: '1%',
+    zIndex: '100',
+    boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px'
 }));
 
 export const Title = styled.h1(() => ({

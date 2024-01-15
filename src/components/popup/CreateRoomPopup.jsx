@@ -1,32 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import BasicInput from '../BasicInput/BasicInput';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import { useUserRooms } from '../../context/rooms/user_rooms_context';
+import './styles.css';
 
-const CreateRoomPopup = ({setRoom}) => {
+const CreateRoomPopup = ({handleSubmit, title, type='Create'}) => {
   const { hidePopup } = useAppContext();
-  const [password, setPassword] = useState('');
   const [newRoom, setNewRoom] = useState();
-  const { userRooms, setUserRooms } = useUserRooms();
+  const { userRooms } = useUserRooms();
   const [roomExists, setRoomExist] = useState(false);
 
-  const handleSubmit = () => {
-    if(!userRooms.includes(newRoom)){
-      setUserRooms((prevArray) => [...prevArray, newRoom]);
-      sessionStorage.setItem('currentRoom', newRoom)
-      setRoom(newRoom);
+  const submit = () => {
+    if(!userRooms.includes(newRoom) && newRoom){
+      handleSubmit(newRoom)
       hidePopup()
     } else {
       setRoomExist(true);
     }
   }
+  
     return (
         <>
-           <div>Create a new group</div>
+           <h1 className='create-group-title'>{title}</h1>
             <BasicInput name='Group' setValue={setNewRoom} />
             {roomExists && <div>The room already exist</div>}
-            <BasicInput name='Password' type='password' setValue={setPassword} />
-            <div onClick={() => handleSubmit()}>create</div>
+            <div className='create-group-btn' onClick={() => submit()}>{type}</div>
         </>
     )
 }

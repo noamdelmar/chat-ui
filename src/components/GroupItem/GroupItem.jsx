@@ -13,7 +13,7 @@ const GroupItem = ({group, setRoom, id}) => {
         if(userRooms === group) setRoom(userRooms[0])
     }
     return(
-        <div style={{backgroundColor: currentRoom === group ? '#3a9e8c' : undefined}} className='group-item-container' onClick={() => setRoom(group)}>
+        <div style={{backgroundColor: currentRoom === group ? '#f2fbff' : undefined}} className='group-item-container' onClick={() => setRoom(group)}>
             <h1 className='group-item-title'>{group}</h1>
             { id !== 0 && 
             <IconButton onClick={handleDelete}>

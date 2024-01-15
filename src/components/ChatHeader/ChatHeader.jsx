@@ -4,11 +4,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import RenameRoomPopup from '../popup/RenameRoomPopup';
+import CreateRoomPopup from '../popup/CreateRoomPopup';
 import { useAppContext } from '../../context/popup/popup_context_provider';
+import { useUserRooms } from '../../context/rooms/user_rooms_context';
 
 const ChatHeader = ({room, setRoom, handleExitRoom, connectedUsers}) => {
     const { showPopup } = useAppContext();
+    const { renameRoom } = useUserRooms();
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
@@ -19,7 +21,11 @@ const ChatHeader = ({room, setRoom, handleExitRoom, connectedUsers}) => {
         setAnchorEl(null);
     };
 
-
+    const handleRenameGroup = (newRoom) => {
+        renameRoom(room, newRoom);
+        sessionStorage.setItem('currentRoom', newRoom)
+        setRoom(newRoom);
+    }
     return (
         <div className='header-container'>
         <div style={{display: 'flex', flexDirection: 'column', marginLeft: '20px', gap: '5px'}}>
@@ -44,7 +50,7 @@ const ChatHeader = ({room, setRoom, handleExitRoom, connectedUsers}) => {
             >
                 <MenuItem onClick={() => handleExitRoom(null)}>Exit Group</MenuItem>
                 {/* <MenuItem onClick={handleClose}>Pin Group</MenuItem> */}
-                <MenuItem onClick={() => showPopup(<RenameRoomPopup room={room} setRoom={setRoom} />) }>Edit Group Name</MenuItem>
+                <MenuItem onClick={() => showPopup(<CreateRoomPopup handleSubmit={handleRenameGroup} title='Rename Group' type='Update' />) }>Edit Group Name</MenuItem>
             </Menu>
         </>
         }
