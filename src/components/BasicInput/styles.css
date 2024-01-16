@@ -1,0 +1,15 @@
+.input-container{
+  display: flex;
+  padding: 10px;
+  height: 10%;
+  z-index: 2;
+  height: 45px;
+  justify-content: center;
+}
+
+.basic-input{
+    background-color: #eaeeed;
+    border: none;
+    color: #617570;
+    height: 50px;
+}

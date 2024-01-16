@@ -1,0 +1,70 @@
+.upload-image-container {
+    width: 85%;
+    height: 90%;
+    background-color: #ededed;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.input-aria-container {
+  display: flex;
+  padding: 10px;
+  background-color: #f5f5f5;
+  height: 10%;
+  z-index: 2;
+  height: 45px;
+  justify-content: center;
+}
+
+.input {
+  flex: 1;
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 20px;
+  border: none;
+  outline: 1px solid black;
+  max-width: 70%;
+  height: 25px;
+  font-size: 16px;
+}
+
+button {
+  padding: 5px;
+  cursor: pointer;
+}
+.input-container {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.fileInputLabel {
+  position: relative;
+  cursor: pointer;
+}
+
+.plusButton {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  color: #757575
+}
+
+/* Hide the default file input button */
+#fileInput {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
